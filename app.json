@@ -1,0 +1,34 @@
+{
+  "expo": {
+    "name": "task-manager",
+    "slug": "task-manager",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "icon": "./src/assets/task.png",
+    "userInterfaceStyle": "light",
+    "newArchEnabled": true,
+    "splash": {
+      "image": "./src/assets/task.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#ffffff"
+    },
+    "ios": {
+      "supportsTablet": true
+    },
+    "android": {
+      "adaptiveIcon": {
+        "foregroundImage": "./src/assets/task.png",
+        "backgroundColor": "#ffffff"
+      },
+      "package": "com.abhishekpowade.taskmanager"
+    },
+    "web": {
+      "favicon": "./src/assets/favicon.png"
+    },
+    "extra": {
+      "eas": {
+        "projectId": "f45ce263-681b-44a0-bcc6-57c504a9cb5d"
+      }
+    }
+  }
+}
