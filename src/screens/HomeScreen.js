@@ -10,7 +10,7 @@ import { useTheme } from "../context/ThemeContext";
 import Feather from "@expo/vector-icons/Feather";
 
 export default function HomeScreen() {
-    const { timers, startTimer, pauseTimer, resetTimer } = useContext(TimerContext);
+    const { timers, startTimer, pauseTimer, resetTimer, startCategory, pauseCategory, resetCategory } = useContext(TimerContext);
     const navigation = useNavigation();
     const { theme, toggleTheme } = useTheme();
     const [expandedCategories, setExpandedCategories] = useState({});
@@ -61,30 +61,50 @@ export default function HomeScreen() {
         return acc;
     }, {});
 
-    const renderCategory = (category) => {
+    const renderCategory = ({ item: category }) => {
         const isExpanded = expandedCategories[category];
 
         // Define category colors
         const categoryStyles = {
-            Workout: { backgroundColor: "#FF5733", textColor: "#FFF" }, // Red-Orange
-            Study: { backgroundColor: "#007BFF", textColor: "#FFF" }, // Blue
-            Break: { backgroundColor: "#28A745", textColor: "#FFF" }, // Green
+            Workout: { backgroundColor: "#FF5733", textColor: "#FFF" }, // Red-Orange (unchanged)
+            Study: { backgroundColor: "#008E9B", textColor: "#FFF" }, // Deep Teal
+            Break: { backgroundColor: "#4CAF50", textColor: "#FFF" }, // Classic Green
         };
 
         return (
             <View key={category} style={styles.categorySection}>
-                <TouchableOpacity
-                    onPress={() => toggleCategory(category)}
+                <TouchableOpacity onPress={() => toggleCategory(category)}
                     style={[styles.categoryHeader, { backgroundColor: categoryStyles[category]?.backgroundColor || "#555" }]}
                 >
                     <Text style={[styles.categoryHeaderText, { color: categoryStyles[category]?.textColor || "#FFF" }]}>
                         {category} ({groupedTimers[category].length})
                     </Text>
-                    <Feather
-                        name={isExpanded ? "chevron-up" : "chevron-down"}
-                        size={20}
-                        color={categoryStyles[category]?.textColor || "#FFF"}
-                    />
+                    <View style={{ flex: 1 }} />
+                    {isExpanded &&
+                        <TouchableOpacity onPress={() => startCategory(category)} style={{ marginHorizontal: 5 }}>
+                            <Feather name="play-circle" size={25} color="white" />
+                        </TouchableOpacity>
+                    }
+                    {isExpanded &&
+                        <TouchableOpacity onPress={() => pauseCategory(category)} style={{ marginHorizontal: 5 }}>
+                            <Feather name="pause-circle" size={25} color="white" />
+                        </TouchableOpacity>
+                    }
+                    {isExpanded &&
+                        <TouchableOpacity onPress={() => resetCategory(category)} style={{ marginHorizontal: 5, marginRight: 20 }}>
+                            <Feather name="refresh-ccw" size={22} color="white" />
+                        </TouchableOpacity>
+                    }
+
+                    <TouchableOpacity onPress={() => toggleCategory(category)}
+                    >
+                        <Feather
+                            name={isExpanded ? "chevron-up" : "chevron-down"}
+                            size={20}
+                            color={categoryStyles[category]?.textColor || "#FFF"}
+                        />
+                    </TouchableOpacity>
+
                 </TouchableOpacity>
 
                 {isExpanded && (
@@ -150,8 +170,16 @@ export default function HomeScreen() {
                 backgroundColor={theme === "dark" ? "#232323" : "#F0F7FF"}
             />
 
+            {timers.length === 0 && <Text style={[styles.noTimers, theme === "dark" ? styles.darkText : styles.lightText]}>No Timers added Yet. Please add Timers.</Text>}
 
-            {Object.keys(groupedTimers).map((category) => renderCategory(category))}
+            {/* {Object.keys(groupedTimers).map((category) => renderCategory(category))} */}
+            <FlatList
+                data={Object.keys(groupedTimers)}
+                keyExtractor={(item) => item}
+                renderItem={renderCategory}
+                contentContainerStyle={{ paddingBottom: 100 }} // Prevents bottom cutoff
+                showsVerticalScrollIndicator={false}
+            />
 
             <View style={{ marginTop: 'auto' }}>
                 <TouchableOpacity onPress={() => navigation.navigate("Add Timer")} style={styles.addButton}>
@@ -173,6 +201,12 @@ const styles = StyleSheet.create({
     addButton: { backgroundColor: "#007BFF", padding: 15, borderRadius: 10, marginBottom: 20, alignItems: "center" },
     historyButton: { backgroundColor: "#28A745", padding: 15, borderRadius: 10, marginBottom: 20, alignItems: "center" },
     addButtonText: { color: "white", fontWeight: "bold" },
+
+    lightText: { color: "black" },
+    darkText: { color: "white" },
+
+    noTimers: { textAlign: "center", fontSize: 18, marginTop: 'auto', marginBottom: 'auto' },
+
     categorySection: {
         marginVertical: 10,
         borderRadius: 10,
