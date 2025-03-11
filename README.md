@@ -13,11 +13,9 @@ This React Native app allows users to create, manage, and interact with multiple
 - **Bulk Actions:** Start, pause, or reset all timers within a category.
 - **User Feedback:** Show an on-screen modal when a timer completes.
 - **Timer History:** Log completed timers with timestamps.
-- **Customizable Alerts:** Notify users at 50% of timer duration.
 - **Data Persistence:** Store timers and logs using AsyncStorage.
 - **Navigation:** Use React Navigation for switching between screens.
 - **Dark Mode Support:** Optional theme switching for light/dark mode.
-- **Export Timer Data:** Export timer history as a JSON file (optional).
 
 ## 🛠️ Tech Stack
 
@@ -35,7 +33,6 @@ project-root/
 │   ├── components/       # Reusable UI components
 │   ├── screens/          # Application screens
 │   ├── context/          # Global state management (useContext/useReducer)
-│   ├── utils/            # Helper functions
 │   ├── navigation/       # App navigation setup
 │-- App.js                # Entry point
 │-- package.json          # Dependencies & scripts
@@ -47,7 +44,7 @@ project-root/
 
 1. **Clone the repository:**
    ```sh
-   git clone https://github.com/pipgainer/timer-app.git
+   git clone https://github.com/pipgainer/timer-task.git
    cd timer-app
    ```
 2. **Install dependencies:**
@@ -56,14 +53,8 @@ project-root/
    ```
 3. **Start the app:**
    ```sh
-   expo start
+   npx expo start
    ```
-
-## 🔜 Future Improvements
-
-- **Push Notifications:** Notify users when timers complete.
-- **Multiple Timer Modes:** Countdown and Stopwatch modes.
-- **Cloud Sync:** Sync timer history with Firebase or other databases.
 
 ## 🏆 Credits
 
